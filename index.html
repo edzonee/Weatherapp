@@ -1,21 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Weather app</title>
 </head>
+
 <body>
-    
+
     <fieldset>
         <legend>Hello</legend>
+        <label for="getWeather">City:</label>
+        <input id="getWeather" name="city" type="text" placeholder="Write city" required>
+        <label for="getCountry">Country:</label>
+        <input id="getCountry" type="text" placeholder="Country" required>
+        <button id="userSubmit"><i class="fa fa-search"></i></button>
     </fieldset>
+
+    <div id="results">
+        <h1 id="cityTitle">Write the City and Country above!</h1>
+        <img id="icon" src="" alt="">
+        <p id="temp"></p>
+        <p id="wind"></p>
+        <p id="humidity"></p>
+        <p id="description"></p>
+    </div>
+
+    <div id="5days">
+         
+    </div>
 
 
 
     <script src="js/anime.min.js"></script>
     <script src="js/script.js"></script>
 </body>
+
 </html>
