@@ -9,7 +9,8 @@ let cityWind = document.getElementById('wind');
 let cityDesc = document.getElementById('description');
 let cityHumudity = document.getElementById('humidity');
 let weatherIcon = document.getElementById('icon');
-let fiveDays = document.getElementById('5days');
+let fiveDays = document.getElementById('fiveDays');
+let errorMsg = document.getElementById('errorMsg');
 
 userSubmit.addEventListener('click', function (e) {
     let city = userInput.value;
@@ -21,82 +22,98 @@ userSubmit.addEventListener('click', function (e) {
     userSubmit = userInput;
     console.log(city);
 
+    if (userCountry.value === '' && userInput.value === '') {
+        clearSecondDiv();
+        clearDiv();
+        errorMsg.innerText = 'Please write a country and a city...';
+    }
+    else if (userInput.value === '') {
+        clearSecondDiv();
+        clearDiv();
 
-    fetch(url).then(
-        function (response) {
-            console.log(response);
-            if (response.status >= 200 && response.status < 300) {
-                return response.json();
-            }
-            else {
-                throw 'Something went wrong...'
-            }
-        }
-    ).then(
-        function (data) {
-            console.log(data)
-            cityTitle.innerText = userSubmit.value
-            cityTemp.innerText = data.data[0].temp + ' ' + '\xB0' + 'C';
-            let icon = data.data[0].weather.icon;
-            weatherIcon.src = `https://www.weatherbit.io/static/img/icons/${icon}.png`;
-            cityWind.innerText = 'Vindhastighet' + ' ' + data.data[0].wind_gust_spd + ' ' + 'm/s';
-            cityDesc.innerText = 'Beskrivning av vädret:' + ' ' + data.data[0].weather.description;
-            cityHumudity.innerText = 'Luftfuktighet: ' + ' ' + data.data[0].rh + '%';
-
-            for (let i = 1; i < 6; i++) {
-                const makeFiveDivs = document.createElement('div');
-                fiveDays.appendChild(makeFiveDivs);
-
-                cityTemp.innerText = data.data[i].temp + ' ' + '\xB0' + 'C';
-                let icon = data.data[i].weather.icon;
-    
-                weatherIcon.src = `https://www.weatherbit.io/static/img/icons/${icon}.png`;
-                
-                cityDesc.innerText = 'Beskrivning av vädret:' + ' ' + data.data[i].weather.description;
-                console.log(i)
-
-            }
-        }
-    ).catch(
-        function (error) {
-            console.log(error);
-        }
-    );
-
-    if (userInput.value === '') {
-        console.log('write city');
+        errorMsg.innerText = 'Please write a city...';
     }
     else if (userCountry.value === '') {
-        console.log('write country dumbass');
+        clearSecondDiv();
+        clearDiv();
+
+        errorMsg.innerText = 'Please write a country...';
+
+    }
+
+    else {
+        clearError();
+        fetch(url).then(
+            function (response) {
+                console.log(response);
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                }
+                else {
+                    throw 'Something went wrong...'
+                }
+            }
+        ).then(
+            function (data) {
+                console.log(data)
+                cityTitle.innerText = userSubmit.value + ' ' + data.country_code;
+                cityTemp.innerText = data.data[0].temp + ' ' + '\xB0' + 'C';
+                let icon = data.data[0].weather.icon;
+                weatherIcon.src = `https://www.weatherbit.io/static/img/icons/${icon}.png`;
+                cityWind.innerText = 'Vindhastighet' + ' ' + data.data[0].wind_gust_spd + ' ' + 'm/s';
+                cityDesc.innerText = 'Beskrivning av vädret:' + ' ' + data.data[0].weather.description;
+                cityHumudity.innerText = 'Luftfuktighet: ' + ' ' + data.data[0].rh + '%';
+
+
+
+                for (let i = 1; i < 6; i++) {
+                    const makeFiveDivs = document.createElement('div');
+                    const cityTitleDiv = document.createElement('h1');
+                    const weatherIconDiv = document.createElement('img');
+                    const cityDescDiv = document.createElement('p');
+                    const cityTempDiv = document.createElement('p');
+
+                    cityTitleDiv.innerText = data.data[i].valid_date;
+                    weatherIconDiv.src = `https://www.weatherbit.io/static/img/icons/${icon}.png`;
+                    cityTempDiv.innerText = data.data[i].temp + ' ' + '\xB0' + 'C';
+                    cityDescDiv.innerText = data.data[0].weather.description;
+
+                    makeFiveDivs.appendChild(cityTitleDiv);
+                    makeFiveDivs.appendChild(weatherIconDiv);
+                    makeFiveDivs.appendChild(cityTempDiv);
+                    makeFiveDivs.appendChild(cityDescDiv);
+                    fiveDays.appendChild(makeFiveDivs);
+                }
+            }
+        ).catch(
+            function (error) {
+                console.log(error);
+            }
+        );
+        clearSecondDiv()
+
     }
 });
 
+function clearDiv() {
+    const divElement = document.querySelectorAll('#results *')
+    for (let element of divElement) {
+        element.innerText = '';
+        element.src = '';
+    }
+}
 
+function clearSecondDiv() {
+    const divEl = document.querySelectorAll('#fiveDays *')
+    for (let i = 0; i < divEl.length; i++) {
+        let el = divEl[i];
+        el.remove();
+    }
+}
 
-// fetch("../countries.json")  
-//   .then(  
-//     function(response) {  
-//     //   if (response.status !== 200) {  
-//     //     console.warn('Looks like there was a problem. Status Code: ' + 
-//     //       response.status);  
-//     //     return;  
-//     //   }
-//     console.log(response);
-
-//       // Examine the text in the response  
-//       response.json().then(function(data) {  
-//         let option;
-
-//         for (let i = 0; i < data.length; i++) {
-//           option = document.createElement('option');
-//           countryInput.appendChild(option);
-//             option.text = data[i].name;
-//             option.value = data[i].code;
-//             countryInput.add(option);
-//         }    
-//       });  
-//     }  
-//   )  
-//   .catch(function(err) {  
-//     console.error('Fetch Error -', err);  
-//   });
+function clearError() {
+    const divElement = document.querySelectorAll('#errorDiv *')
+    for (let element of divElement) {
+        element.innerText = '';
+    }
+}

@@ -13,14 +13,14 @@
 
 <body>
 
-    <fieldset>
+    <form>
         <legend>Hello</legend>
         <label for="getWeather">City:</label>
         <input id="getWeather" name="city" type="text" placeholder="Write city" required>
         <label for="getCountry">Country:</label>
         <input id="getCountry" type="text" placeholder="Country" required>
-        <button id="userSubmit"><i class="fa fa-search"></i></button>
-    </fieldset>
+        <button type='submit' id="userSubmit"><i class="fa fa-search"></i></button>
+    </form>
 
     <div id="results">
         <h1 id="cityTitle">Write the City and Country above!</h1>
@@ -30,8 +30,12 @@
         <p id="humidity"></p>
         <p id="description"></p>
     </div>
+    <div id="errorDiv">
+            <h1 id="errorMsg"></h1>
+    </div>
 
-    <div id="5days">
+
+    <div id="fiveDays">
          
     </div>
 

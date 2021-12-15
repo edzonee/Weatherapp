@@ -1,35 +1,47 @@
-legend{
-    background-color: black;
-    color: white;
-    width: 100%;
-    font-size: 32px;
-    text-align: center;
+legend {
+  background-color: black;
+  color: white;
+  width: 100%;
+  font-size: 32px;
+  text-align: center;
 }
 
-fieldset{
-    display: flex;
-    justify-content: center;
+form {
+  text-align: center;
 }
 
-button{
-    padding: 10px;
-    background-color: rgb(132, 208, 255);
-    border: none;
-    border-radius: 10%;
+button {
+  padding: 10px;
+  background-color: rgb(132, 208, 255);
+  border: none;
+  border-radius: 10%;
 }
-button:hover{
-    background-color:  rgb(122, 183, 222);
-}
-
-input{
-    padding: 10px;
+button:hover {
+  background-color: rgb(122, 183, 222);
 }
 
-label{
-    font-size: 18px;
-    padding: 10px;
+input {
+  padding: 10px;
 }
 
-div{
+label {
+  font-size: 18px;
+  padding: 10px;
+}
+
+#results {
+  text-align: center;
+  border: 1px solid black;
+}
+
+#fiveDays {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: center;
+}
+
+#errorDiv{
     text-align: center;
 }
