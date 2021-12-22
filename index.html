@@ -14,11 +14,11 @@
 <body>
 
     <form>
-        <legend>Hello</legend>
-        <label for="getWeather">City:</label>
-        <input id="getWeather" name="city" type="text" placeholder="Write city (ex. Malmö)" required>
-        <label for="getCountry">Country:</label>
-        <input id="getCountry" type="text" placeholder="Country (ex. SE)" required>
+        <legend>Välkommen till Ed's väderapp</legend>
+        <label for="getWeather">Stad:</label>
+        <input id="getWeather" name="city" type="text" placeholder="Skriv stad (ex. Malmö)" required>
+        <label for="getCountry">Land:</label>
+        <input id="getCountry" type="text" placeholder="Land (ex. SE)" required>
         <button type='submit' id="userSubmit"><i class="fa fa-search"></i></button>
     </form>
 
@@ -27,8 +27,8 @@
     </div>
     
     <div id="results">
-        <div class="border">
-        <h1 id="cityTitle">Write the City and Country above!</h1>
+        <div id="border">
+        <h1 id="cityTitle">Skriv en stad och ett land ovan!</h1>
         <img id="icon" src="" alt="">
         <p id="temp"></p>
         <p id="wind"></p>
@@ -49,6 +49,7 @@
 
 
     <script src="js/anime.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="js/script.js"></script>
 </body>
 
