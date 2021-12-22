@@ -16,19 +16,25 @@
     <form>
         <legend>Hello</legend>
         <label for="getWeather">City:</label>
-        <input id="getWeather" name="city" type="text" placeholder="Write city" required>
+        <input id="getWeather" name="city" type="text" placeholder="Write city (ex. Malmö)" required>
         <label for="getCountry">Country:</label>
-        <input id="getCountry" type="text" placeholder="Country" required>
+        <input id="getCountry" type="text" placeholder="Country (ex. SE)" required>
         <button type='submit' id="userSubmit"><i class="fa fa-search"></i></button>
     </form>
 
+    <div id=loadingAnime>
+
+    </div>
+    
     <div id="results">
+        <div class="border">
         <h1 id="cityTitle">Write the City and Country above!</h1>
         <img id="icon" src="" alt="">
         <p id="temp"></p>
         <p id="wind"></p>
         <p id="humidity"></p>
         <p id="description"></p>
+    </div>
     </div>
     <div id="errorDiv">
             <h1 id="errorMsg"></h1>
@@ -38,6 +44,7 @@
     <div id="fiveDays">
          
     </div>
+
 
 
 

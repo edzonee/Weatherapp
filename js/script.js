@@ -11,17 +11,23 @@ let cityHumudity = document.getElementById('humidity');
 let weatherIcon = document.getElementById('icon');
 let fiveDays = document.getElementById('fiveDays');
 let errorMsg = document.getElementById('errorMsg');
+const loopLoad = document.getElementById('loadingAnime');
+loopLoad.style.display = 'none';
 
 userSubmit.addEventListener('click', function (e) {
     let city = userInput.value;
     let country = userCountry.value;
-    let url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&lang=sv&country=${country}&key=${API_KEY}`;
+    let urlCurrent = `https://api.weatherbit.io/v2.0/current?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&city=${city}`
+    let urlForeCast = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&lang=sv&country=${country}&key=${API_KEY}`;
+
+    console.log(`https://api.weatherbit.io/v2.0/current?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&city=${city}`);
+    
 
     e.preventDefault();
     city = userInput.value;
     userSubmit = userInput;
     console.log(city);
-
+    loadingAnime();
     if (userCountry.value === '' && userInput.value === '') {
         clearSecondDiv();
         clearDiv();
@@ -43,7 +49,7 @@ userSubmit.addEventListener('click', function (e) {
 
     else {
         clearError();
-        fetch(url).then(
+        fetch(urlCurrent).then(
             function (response) {
                 console.log(response);
                 if (response.status >= 200 && response.status < 300) {
@@ -56,28 +62,47 @@ userSubmit.addEventListener('click', function (e) {
         ).then(
             function (data) {
                 console.log(data)
-                cityTitle.innerText = userSubmit.value + ' ' + data.country_code;
+                cityTitle.innerText = userSubmit.value + ' ' + data.data[0].country_code;
                 cityTemp.innerText = data.data[0].temp + ' ' + '\xB0' + 'C';
                 let icon = data.data[0].weather.icon;
                 weatherIcon.src = `https://www.weatherbit.io/static/img/icons/${icon}.png`;
-                cityWind.innerText = 'Vindhastighet' + ' ' + data.data[0].wind_gust_spd + ' ' + 'm/s';
+                cityWind.innerText = 'Vindhastighet' + ' ' + data.data[0].wind_spd + ' ' + 'm/s';
                 cityDesc.innerText = 'Beskrivning av vädret:' + ' ' + data.data[0].weather.description;
                 cityHumudity.innerText = 'Luftfuktighet: ' + ' ' + data.data[0].rh + '%';
+            }
+            
+        ).catch(
+            function (error) {
+                console.log(error);
+            }
+        );
 
-
-
+        fetch(urlForeCast).then(
+            function (response) {
+                console.log(response);
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                    
+                }
+                else {
+                    throw 'Something went wrong...'
+                }
+            }
+        ).then(
+            function (data) {
                 for (let i = 1; i < 6; i++) {
                     const makeFiveDivs = document.createElement('div');
                     const cityTitleDiv = document.createElement('h1');
                     const weatherIconDiv = document.createElement('img');
+                    let icon = data.data[i].weather.icon;
                     const cityDescDiv = document.createElement('p');
                     const cityTempDiv = document.createElement('p');
 
                     cityTitleDiv.innerText = data.data[i].valid_date;
                     weatherIconDiv.src = `https://www.weatherbit.io/static/img/icons/${icon}.png`;
                     cityTempDiv.innerText = data.data[i].temp + ' ' + '\xB0' + 'C';
-                    cityDescDiv.innerText = data.data[0].weather.description;
-
+                    cityDescDiv.innerText = data.data[i].weather.description;
+                    console.log(data.data[0].weather.icon)
                     makeFiveDivs.appendChild(cityTitleDiv);
                     makeFiveDivs.appendChild(weatherIconDiv);
                     makeFiveDivs.appendChild(cityTempDiv);
@@ -91,9 +116,12 @@ userSubmit.addEventListener('click', function (e) {
             }
         );
         clearSecondDiv()
-
+       
     }
+
 });
+
+
 
 function clearDiv() {
     const divElement = document.querySelectorAll('#results *')
@@ -117,3 +145,39 @@ function clearError() {
         element.innerText = '';
     }
 }
+
+function loadingAnime() {
+    loopLoad.style.display = 'block';
+    anime({
+        targets: '#loadingAnime',
+        width: '100%', // -> from '28px' to '100%',
+        easing: 'easeInOutQuad',
+        direction: 'alternate',
+        loop: true
+      });
+}
+/*function imageGallery(searchText){
+    const key = '070736a69e7bd29c919af4b92a25f109';
+    let flickrUrl = `https://www.flickr.com/services/rest/?api_key=${key}&method=flickr.photos.search&text=${searchText}&format=json&nojsoncallback=1&per_page=1&page=1`;
+    console.log(flickrUrl);
+}*/
+
+/*
+for (let i = 1; i < 6; i++) {
+    const makeFiveDivs = document.createElement('div');
+    const cityTitleDiv = document.createElement('h1');
+    const weatherIconDiv = document.createElement('img');
+    const cityDescDiv = document.createElement('p');
+    const cityTempDiv = document.createElement('p');
+
+    cityTitleDiv.innerText = data.data[i].valid_date;
+    weatherIconDiv.src = `https://www.weatherbit.io/static/img/icons/${icon}.png`;
+    cityTempDiv.innerText = data.data[i].temp + ' ' + '\xB0' + 'C';
+    cityDescDiv.innerText = data.data[0].weather.description;
+
+    makeFiveDivs.appendChild(cityTitleDiv);
+    makeFiveDivs.appendChild(weatherIconDiv);
+    makeFiveDivs.appendChild(cityTempDiv);
+    makeFiveDivs.appendChild(cityDescDiv);
+    fiveDays.appendChild(makeFiveDivs);
+}*/
