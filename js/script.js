@@ -20,37 +20,30 @@ userSubmit.addEventListener("click", function (e) {
   let urlCurrent = `https://api.weatherbit.io/v2.0/current?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&city=${city}&country=${country}`;
   let urlForeCast = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&lang=sv&country=${country}&key=${API_KEY}`;
 
-  console.log(
-    `https://api.weatherbit.io/v2.0/current?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&city=${city}`
-  );
-
   e.preventDefault();
   city = userInput.value;
   userSubmit = userInput;
-  console.log(city);
+
   if (userInput.value === "") {
     clearSecondDiv();
-
     errorMsg.innerText = "Var vänlig och skriv en stad...";
-    divFiveDays.style.display = 'none';
-    divBorder.style.display = 'none';
-
+    clearWeather();
+    
   } else {
     clearError();
 
-    $(divBorder).on('mouseenter', function () {
-      $('#results').css('backgroundColor', 'black');
-      $('#results').css('color', 'white');
-
+    $(divBorder).on("mouseenter", function () {
+      $("#results").css("backgroundColor", "black");
+      $("#results").css("color", "white");
     });
 
-    $(divBorder).on('mouseleave', function () {
-      $('#results').css('backgroundColor', 'rgb(235, 235, 235)');
-      $('#results').css('color', 'black');
+    $(divBorder).on("mouseleave", function () {
+      $("#results").css("backgroundColor", "rgb(235, 235, 235)");
+      $("#results").css("color", "black");
+
     });
     fetch(urlCurrent)
       .then(function (response) {
-        console.log(response);
         if (response.status >= 200 && response.status < 300) {
           return response.json();
         } else {
@@ -58,9 +51,9 @@ userSubmit.addEventListener("click", function (e) {
         }
       })
       .then(function (data) {
-        console.log(data);
-        divBorder.style.display = 'block';
-        divFiveDays.style.display = 'flex';
+        divBorder.style.display = "block";
+        divFiveDays.style.display = "flex";
+
         cityTitle.innerText =
           userSubmit.value + " " + data.data[0].country_code;
         cityTemp.innerText = data.data[0].temp + " " + "\xB0" + "C";
@@ -74,8 +67,6 @@ userSubmit.addEventListener("click", function (e) {
           "Luftfuktighet: " + " " + data.data[0].rh + "%";
         divBorder.style.boxShadow = "0 2px 10px 0 rgba(93, 95, 96, 0.83)";
         divBorder.style.backgroundColor = "rgb(235, 235, 235)";
-
-
       })
       .catch(function (error) {
         console.log(error);
@@ -83,17 +74,12 @@ userSubmit.addEventListener("click", function (e) {
 
     fetch(urlForeCast)
       .then(function (response) {
-        console.log(response);
-        
         if (response.status >= 200 && response.status < 300) {
-          if(response.statusText === 'No Content') throw 'fel';
+          if (response.statusText === "No Content") throw "fel";
           else return response.json();
         } else {
           throw "Something went wrong...";
         }
-        
-
-
       })
       .then(function (data) {
         for (let i = 1; i < 6; i++) {
@@ -108,7 +94,7 @@ userSubmit.addEventListener("click", function (e) {
           weatherIconDiv.src = `https://www.weatherbit.io/static/img/icons/${icon}.png`;
           cityDescDiv.innerText = data.data[i].weather.description;
           cityTempDiv.innerText = data.data[i].temp + " " + "\xB0" + "C";
-          console.log(data.data[0].weather.icon);
+
           makeFiveDivs.appendChild(cityTitleDiv);
           makeFiveDivs.appendChild(weatherIconDiv);
           makeFiveDivs.appendChild(cityTempDiv);
@@ -118,19 +104,15 @@ userSubmit.addEventListener("click", function (e) {
         }
       })
       .catch(function (error) {
-        console.log(error);
-        if (error === 'fel'){
+        if (error === "fel") {
           errorMsg.innerText = "Var vänlig och skriv en giltig kombination...";
-          console.log('det funkar verkligen när det blir fel')
-          divFiveDays.style.display = 'none';
-    divBorder.style.display = 'none';
+
+          clearWeather();
         }
       });
     clearSecondDiv();
-
   }
 });
-
 
 function clearDiv() {
   const divElement = document.querySelectorAll("#results *");
@@ -153,4 +135,9 @@ function clearError() {
   for (let element of divElement) {
     element.innerText = "";
   }
+}
+
+function clearWeather() {
+  divFiveDays.style.display = "none";
+  divBorder.style.display = "none";
 }
